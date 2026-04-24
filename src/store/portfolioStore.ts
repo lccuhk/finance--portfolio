@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { create, type StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { SavedPortfolio } from '@/types';
 
@@ -98,10 +98,13 @@ const storeCreator = (set: (fn: (state: PortfolioState) => Partial<PortfolioStat
 });
 
 export const usePortfolioStore = create<PortfolioState>()(
-  persist(storeCreator, {
-    name: 'portfolio-storage',
-    version: 1,
-  })
+  persist(
+    storeCreator as StateCreator<PortfolioState, [], []>,
+    {
+      name: 'portfolio-storage',
+      version: 1,
+    }
+  )
 );
 
 export const useTestPortfolioStore = create<PortfolioState>(storeCreator);
